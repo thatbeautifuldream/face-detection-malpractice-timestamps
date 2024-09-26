@@ -21,7 +21,7 @@ const MalpracticeAudio = ({ onMalpractice }: Props) => {
               audioRef.current.pause();
               audioRef.current.currentTime = 0;
             }
-          }, 3000);
+          }, 10000);
         })
         .catch((error) => {
           console.log("Audio play was prevented:", error);
@@ -36,7 +36,10 @@ const MalpracticeAudio = ({ onMalpractice }: Props) => {
 
   return (
     <audio ref={audioRef}>
-      <source src="/sounds/rickroll.mp3" type="audio/mpeg" />
+      <source
+        src="/sounds/ElevenLabs_2024-09-26T19_15_20_Brian_pre_s50_sb75_se0_b_m2.mp3"
+        type="audio/mpeg"
+      />
       Your browser does not support the audio element.
     </audio>
   );
