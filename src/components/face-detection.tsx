@@ -7,6 +7,7 @@ import {
   Detection,
 } from "@mediapipe/tasks-vision";
 import { toast } from "sonner";
+import MalpracticeAudio from "./malpractice-audio";
 
 export default function FaceDetection() {
   // State to track if a subject is in the frame
@@ -159,6 +160,7 @@ export default function FaceDetection() {
           playsInline
         />
       </div>
+      <MalpracticeAudio onMalpractice={!subjectInFrame} />
     </div>
   );
 }
