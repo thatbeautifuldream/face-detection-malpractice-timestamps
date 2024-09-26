@@ -8,23 +8,19 @@ interface Props {
 
 const MalpracticeAudio = ({ onMalpractice }: Props) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isPlayingRef = useRef(false);
 
   // Play audio for 3 seconds when malpractice occurs
   const handleMalpractice = () => {
-    if (onMalpractice && audioRef.current) {
+    if (onMalpractice && audioRef.current && !isPlayingRef.current) {
+      isPlayingRef.current = true;
       audioRef.current
         .play()
-        .then(() => {
-          // Set a timeout to stop the audio after 3 seconds
-          setTimeout(() => {
-            if (audioRef.current) {
-              audioRef.current.pause();
-              audioRef.current.currentTime = 0;
-            }
-          }, 10000);
-        })
         .catch((error) => {
           console.log("Audio play was prevented:", error);
+        })
+        .finally(() => {
+          isPlayingRef.current = false;
         });
     }
   };
@@ -33,6 +29,19 @@ const MalpracticeAudio = ({ onMalpractice }: Props) => {
   useEffect(() => {
     handleMalpractice();
   }, [onMalpractice]);
+
+  useEffect(() => {
+    const audioElement = audioRef.current;
+    if (audioElement) {
+      const handleEnded = () => {
+        isPlayingRef.current = false;
+      };
+      audioElement.addEventListener("ended", handleEnded);
+      return () => {
+        audioElement.removeEventListener("ended", handleEnded);
+      };
+    }
+  }, []);
 
   return (
     <audio ref={audioRef}>
