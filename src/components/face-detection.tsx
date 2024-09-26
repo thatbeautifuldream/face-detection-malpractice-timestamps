@@ -6,6 +6,7 @@ import {
   FilesetResolver,
   Detection,
 } from "@mediapipe/tasks-vision";
+import { toast } from "sonner";
 
 export default function FaceDetection() {
   // State to track if a subject is in the frame
@@ -67,7 +68,8 @@ export default function FaceDetection() {
         startTimeMs
       ).detections;
       displayVideoDetections(detections);
-      setSubjectInFrame(detections.length > 0);
+      const isSubjectInFrame = detections.length > 0;
+      setSubjectInFrame(isSubjectInFrame);
     }
 
     // Continue the detection loop
@@ -135,6 +137,12 @@ export default function FaceDetection() {
       });
     });
   };
+
+  useEffect(() => {
+    if (!subjectInFrame) {
+      toast.error("Subject is not in frame");
+    }
+  }, [subjectInFrame]);
 
   return (
     <div className="relative w-full h-full">
